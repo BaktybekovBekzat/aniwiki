@@ -1,1 +1,1 @@
-export { default as SidebarMenu } from './SidebarMenu'
+export { default as Header } from 'react'
