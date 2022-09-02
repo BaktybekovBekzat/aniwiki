@@ -1,10 +1,10 @@
-import React from 'react'
-import { render, screen } from '@testing-library/react'
-import { MockedProvider } from '@apollo/client/testing'
-import { Characters } from '../index'
-import { GET_ALL_CHARACTERS } from '../../apollo/queries/character.query'
-import { MemoryRouter } from 'react-router-dom'
-import '@testing-library/jest-dom'
+import React from "react";
+import { getByTestId, render } from "@testing-library/react";
+import { MockedProvider } from "@apollo/client/testing";
+import { Characters } from "../index";
+import { GET_ALL_CHARACTERS } from "../../apollo/queries/character.query";
+import { MemoryRouter } from "react-router-dom";
+import "@testing-library/jest-dom";
 
 const mocks = [
     {
@@ -22,51 +22,51 @@ const mocks = [
                         {
                             id: 1,
                             image: {
-                                medium: 'https://us22.worksnaps.com/app/images/logo_worksnaps_xsmall.png',
+                                medium: "https://us22.worksnaps.com/app/images/logo_worksnaps_xsmall.png",
                             },
-                            name: { first: 'Ichigo', last: 'Kurosaki' },
+                            name: { first: "Ichigo", last: "Kurosaki" },
                         },
                         {
                             id: 2,
                             image: {
-                                medium: 'https://us22.worksnaps.com/app/images/logo_worksnaps_xsmall.png',
+                                medium: "https://us22.worksnaps.com/app/images/logo_worksnaps_xsmall.png",
                             },
-                            name: { first: 'Almaz', last: 'Dzhumaev' },
+                            name: { first: "Almaz", last: "Dzhumaev" },
                         },
                     ],
                 },
             },
         },
     },
-]
+];
 
-describe('Test characters component', () => {
-    it('should render loading state initially', async () => {
-        const { findByText } = render(
+describe("Test characters component", () => {
+    it("should render loading state initially", () => {
+        const { getByTestId } = render(
             <MockedProvider mocks={mocks} addTypename={false}>
-                <MemoryRouter>
+                <MemoryRouter initialEntries={["/characters"]}>
                     <Characters />
                 </MemoryRouter>
-            </MockedProvider>,
-        )
+            </MockedProvider>
+        );
 
-        expect(await findByText('Loading...')).toBeInTheDocument()
-    })
+        expect(getByTestId("skeleton")).toBeInTheDocument();
+    });
 
-    it('should render list without errors', async () => {
+    it("should render list without errors", async () => {
         const { findByText } = render(
             <MockedProvider mocks={mocks} addTypename={false}>
-                <MemoryRouter>
+                <MemoryRouter initialEntries={["/characters"]}>
                     <Characters />
                 </MemoryRouter>
-            </MockedProvider>,
-        )
+            </MockedProvider>
+        );
 
-        expect(await findByText(/Kurosaki/)).toBeInTheDocument()
-        expect(await findByText(/Dzhumaev/)).toBeInTheDocument()
-    })
+        expect(await findByText(/Kurosaki/)).toBeInTheDocument();
+        expect(await findByText(/Dzhumaev/)).toBeInTheDocument();
+    });
 
-    it('should show error UI', async () => {
+    it("should show error UI", async () => {
         const errorMock = {
             request: {
                 query: GET_ALL_CHARACTERS,
@@ -75,17 +75,17 @@ describe('Test characters component', () => {
                     perPage: 16,
                 },
             },
-            error: new Error('An error occurred'),
-        }
+            error: new Error("An error occurred"),
+        };
 
         const { findByText } = render(
             <MockedProvider mocks={[errorMock]} addTypename={false}>
-                <MemoryRouter>
+                <MemoryRouter initialEntries={["/characters"]}>
                     <Characters />
                 </MemoryRouter>
-            </MockedProvider>,
-        )
+            </MockedProvider>
+        );
 
-        expect(await findByText(/An error occurred/)).toBeInTheDocument()
-    })
-})
+        expect(await findByText(/An error occurred/)).toBeInTheDocument();
+    });
+});

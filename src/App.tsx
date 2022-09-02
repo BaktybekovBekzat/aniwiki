@@ -5,7 +5,7 @@ import { Characters, Medias } from './pages'
 const App: FC = () => {
     return (
         <Routes>
-            <Route path='/' element={<Characters />} />
+            <Route path='/characters' element={<Characters />} />
             <Route path='/medias' element={<Medias />} />
         </Routes>
     )
